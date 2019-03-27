@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+
+<!-- https://patra.imgix.net/images/2018-09-25/061d97c4-1ecd-4dfd-8353-99a07141c30b.jpg?auto=compress%2Cformat&bri=10&fit=crop&lossless=0&q=0&w=187.5 -->
+<!-- https://patra.imgix.net/images/2018-09-25/061d97c4-1ecd-4dfd-8353-99a07141c30b.jpg?auto=compress%2Cformat&bri=10&fit=crop&lossless=0&q=75&w=750 -->
+
+<body>
+  <div style="width:375px;">
+    <img style="display: block;width:100%;"
+      src="https://patra.imgix.net/images/2018-09-25/061d97c4-1ecd-4dfd-8353-99a07141c30b.jpg?auto=compress%2Cformat&bri=10&fit=crop&lossless=0&q=0&w=187.5"
+      alt=""
+      data-src="https://patra.imgix.net/images/2018-09-25/061d97c4-1ecd-4dfd-8353-99a07141c30b.jpg?auto=compress%2Cformat&bri=10&fit=crop&lossless=0&q=75&w=750">
+  </div>
+
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script>
+    const instance = axios.create({
+      "responseType": "arraybuffer"
+    });
+
+    const img = document.querySelector("img");
+    const highSrc = img.dataset.src;
+    setTimeout(() => {
+      instance.get(highSrc).then(res => {
+        let image = btoa(new Uint8Array(res.data).reduce((data, byte) => data + String.fromCharCode(byte), ""))
+        img.src = `data:${res.headers["content-type"].toLowerCase()};base64,${image}`
+      });
+    }, 1000);
+  </script>
+
+</body>
+
+</html>
